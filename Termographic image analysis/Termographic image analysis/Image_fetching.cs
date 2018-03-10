@@ -15,7 +15,7 @@ namespace Termographic_image_analysis
 
         public Image_fetching()
         {
-
+            lastImageData = null;
         }
 
         public ushort[,] getLastImageData()

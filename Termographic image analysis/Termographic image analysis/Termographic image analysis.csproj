@@ -57,6 +57,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Image_loader.cs" />
     <Compile Include="Image_fetching.cs" />
     <Compile Include="Inflamation_detection.cs" />
     <Compile Include="Organizer.cs" />
