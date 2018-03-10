@@ -11,7 +11,7 @@ namespace Termographic_image_analysis
     abstract class Image_fetching
     {
 
-        private ushort[,] lastImageData;
+        protected ushort[,] lastImageData;
 
         public Image_fetching()
         {
