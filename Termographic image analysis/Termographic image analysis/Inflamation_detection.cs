@@ -10,8 +10,6 @@ namespace Termographic_image_analysis
     class Inflamation_detection : Analysis
     {
 
-        protected ushort pixelNum;
-        protected float meanTemp;
 
         public Inflamation_detection(ushort[,] lastImageData, Bitmap image) : base(lastImageData, image)
         {
@@ -20,10 +18,12 @@ namespace Termographic_image_analysis
         }
 
 
-        public override void Analize(ushort range)
+        public Tuple<ushort, float> Analize(ushort range)
         {
 
             ushort integralTemp = 0;
+            ushort pixelNum = 0;
+            float meanTemp = 0;
 
             for (int i = 0; i < lastImageData.GetLength(0); i++)
             {
@@ -41,9 +41,10 @@ namespace Termographic_image_analysis
                     meanTemp = RoundUp(meanTemp, 2);
                 
             }
+            return new Tuple<ushort, float>(pixelNum, meanTemp);
             
         }
 
     }
-    }
+   
 }

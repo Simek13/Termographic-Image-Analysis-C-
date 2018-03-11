@@ -86,7 +86,7 @@ namespace Termographic_image_analysis
                 scaleLimitUpper = (double)node.Value;
                 */
             }
-            catch (Jai_FactoryDotNET.Jai_FactoryWrapper.FactoryErrorException e)
+            catch (Jai_FactoryWrapper.FactoryErrorException e)
             {
             }
 
@@ -103,7 +103,7 @@ namespace Termographic_image_analysis
 
         }
 
-        private void GetImageData(Jai_FactoryDotNET.Jai_FactoryWrapper.ImageInfo imageInfo)
+        private ushort[,] GetImageData(Jai_FactoryWrapper.ImageInfo imageInfo)
         {
 
             int rows = (int)imageInfo.SizeY;
@@ -126,6 +126,7 @@ namespace Termographic_image_analysis
                 }
 
             }
+            return lastImageData;
         }
 
         private CCamera InitializeCamera()

@@ -110,7 +110,125 @@ namespace Termographic_image_analysis
             return (float)Math.Ceiling(input * multiplier) / multiplier;
         }
 
-        public abstract void Analize(ushort range = 0);
+        public Bitmap removeBackground(Bitmap image)
+        {
+            int minBodyTemp = findMinBodyTemperature();
+
+            
+            for (int i = 0; i < lastImageData.GetLength(0); i++)
+            {
+                for (int j = 0; j < lastImageData.GetLength(1); j++)
+                {
+                    if (lastImageData[i, j] < minBodyTemp)
+                    {
+                        image.SetPixel(j, i, Color.White);
+                    }
+                    
+                }
+            }
+
+            
+            return image;
+        }
+
+        public int findMinBodyTemperature()
+        {
+            ushort[] histogram = new ushort[this.histogram.Length];
+
+            histogram = (ushort[])this.histogram.Clone();
+
+            histogram[0] = 0;
+            histogram[histogram.Length - 1] = 0;
+
+            bool control = true;
+            int numberOfHistogramElements = 0;
+
+            while (control)
+            {
+                numberOfHistogramElements = 0;
+                histogram = findPeaks(histogram);
+                for (int i = 0; i < histogram.Length; i++)
+                {
+                    if (histogram[i] != 0)
+                    {
+                        numberOfHistogramElements++;
+                    }
+                }
+
+                if (numberOfHistogramElements == 2)
+                {
+                    control = false;
+                }
+            }
+
+
+            int peak1 = 0, peak2 = 0;
+            for (int i = 0; i < histogram.Length; i++)
+            {
+                if (histogram[i] != 0)
+                {
+                    if (!control)
+                    {
+                        peak1 = i;
+                        control = true;
+                    }
+                    else
+                    {
+                        peak2 = i;
+                    }
+                }
+            }
+
+            histogram = (ushort[])this.histogram.Clone();
+
+            int minimum = 65535;
+            int tempDiff = 0;
+            for (int i = peak1; i < peak2; i++)
+            {
+                if (histogram[i] < minimum)
+                {
+                    minimum = histogram[i];
+                    tempDiff = i;
+                }
+            }
+            return tempDiff + minTemp;
+        }
+
+        private ushort[] findPeaks(ushort[] histogram)
+        {
+            int[] peaks = new int[histogram.Length];
+            int j = 0;
+            for (int i = 0; i < histogram.Length; i++)
+            {
+                if (histogram[i] != 0)
+                {
+                    peaks[j] = i;
+                    j++;
+                }
+            }
+
+            for (; j < histogram.Length; j++)
+            {
+                peaks[j] = 0;
+            }
+
+
+            for (int i = 1; peaks[i] != 0; i++)
+            {
+                if (histogram[peaks[i]] < histogram[peaks[i - 1]] || histogram[peaks[i]] < histogram[peaks[i + 1]])
+                {
+                    histogram[peaks[i]] = 0;
+                }
+
+                if (histogram[peaks[i - 1]] < histogram[peaks[i]])
+                {
+                    histogram[peaks[i - 1]] = 0;
+                }
+            }
+
+            return histogram;
+        }
+
 
     }
 }
