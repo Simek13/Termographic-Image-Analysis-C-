@@ -14,6 +14,17 @@ namespace Termographic_image_analysis
         protected ushort[] histogram;
         protected ushort minTemp;
         protected ushort maxTemp;
+        protected Bitmap image;
+
+        public Analysis(ushort[,] lastImageData, Bitmap image)
+        {
+            this.lastImageData = lastImageData;
+            this.image = image;
+
+            Min_max();
+            removeHeader();
+
+        }
 
         public float Average_temp_area(int minRow, int maxRow, int minCol, int maxCol)
         {
@@ -39,6 +50,8 @@ namespace Termographic_image_analysis
 
         }
 
+
+
         public void Calculate_histogram()
         {
             histogram = new ushort[maxTemp - minTemp + 1];
@@ -51,6 +64,23 @@ namespace Termographic_image_analysis
                 }
             }
 
+        }
+
+        private void removeHeader()
+        {
+            int rows = lastImageData.GetLength(0);
+            int cols = lastImageData.GetLength(1);
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    if(lastImageData[i,j] == 0)
+                    {
+                        lastImageData[i,j] = minTemp;
+                    }
+                }
+            }
         }
 
         public void Min_max()
@@ -74,7 +104,13 @@ namespace Termographic_image_analysis
             }
         }
 
-        public abstract void Analize();
+        public static float RoundUp(float input, int places)
+        {
+            float multiplier = (float)Math.Pow(10, Convert.ToDouble(places));
+            return (float)Math.Ceiling(input * multiplier) / multiplier;
+        }
+
+        public abstract void Analize(ushort range = 0);
 
     }
 }
