@@ -103,13 +103,13 @@ namespace Termographic_image_analysis
 
         }
 
-        private ushort[,] GetImageData(Jai_FactoryDotNET.Jai_FactoryWrapper.ImageInfo imageInfo)
+        private void GetImageData(Jai_FactoryDotNET.Jai_FactoryWrapper.ImageInfo imageInfo)
         {
 
             int rows = (int)imageInfo.SizeY;
             int cols = (int)imageInfo.SizeX;
 
-            ushort[,] imageData = new ushort[rows, cols];
+            ushort[,] lastImageData = new ushort[rows, cols];
             unsafe
             {
                 byte* bytes = (byte*)imageInfo.ImageBuffer;
@@ -120,14 +120,12 @@ namespace Termographic_image_analysis
                     {
                         int p1 = bytes[2 * (i * cols + j)];
                         int p2 = bytes[2 * (i * cols + j) + 1];
-                        imageData[i, j] = (ushort)((p2 << 8) + p1);
+                        lastImageData[i, j] = (ushort)((p2 << 8) + p1);
 
                     }
                 }
 
             }
-
-            return imageData;
         }
 
         private CCamera InitializeCamera()

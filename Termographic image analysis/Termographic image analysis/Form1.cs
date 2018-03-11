@@ -21,9 +21,6 @@ namespace Termographic_image_analysis
             InitializeComponent();
         }
 
-        private CFactory factory = new CFactory();
-        private CCamera camera = null;
-
         private int minValue = 0;
         private int maxValue = 65535;
         private int minData = 0;
@@ -63,64 +60,9 @@ namespace Termographic_image_analysis
         //Šime analysis
 
         private bool symmetryAnalysis = false;
-        private double minBTemp;
-        private double tempDiff;
 
 
-        private void Test()
-        {
-
-
-
-            Jai_FactoryWrapper.EFactoryError error = Jai_FactoryWrapper.EFactoryError.Success;
-
-            // Open the factory with the default Registry database
-            error = factory.Open("");
-
-            if (null != camera)
-            {
-                if (camera.IsOpen)
-                {
-                    camera.Close();
-                }
-
-                camera = null;
-            }
-
-            // Discover GigE and/or generic GenTL devices using myFactory.UpdateCameraList(in this case specifying Filter Driver for GigE cameras).
-            factory.UpdateCameraList(Jai_FactoryDotNET.CFactory.EDriverType.SocketDriver);
-            //myFactory.UpdateCameraList(Jai_FactoryDotNET.CFactory.EDriverType.FilterDriver);
-
-            // Open the camera - first check for GigE devices
-            for (int i = 0; i < factory.CameraList.Count; i++)
-            {
-                camera = factory.CameraList[i];
-                if (Jai_FactoryWrapper.EFactoryError.Success == camera.Open())
-                {
-                    break;
-                }
-            }
-
-            if (null != camera && camera.IsOpen)
-            {
-                if (camera != null)
-                    camera.StartImageAcquisition(true, 5);
-
-                for (int i = 0; i < 100; ++i)
-                {
-                    Console.WriteLine(camera.ZoomIn());
-                }
-                camera.ZoomReset();
-                camera.NewImageDelegate += new Jai_FactoryWrapper.ImageCallBack(HandleImage);
-            }
-            else
-            {
-
-
-                MessageBox.Show("No Cameras Found!");
-            }
-        }
-
+        
         private void Form1_Load(object sender, EventArgs e)
         {
 
