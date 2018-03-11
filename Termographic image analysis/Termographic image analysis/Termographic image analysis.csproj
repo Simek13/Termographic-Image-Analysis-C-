@@ -57,6 +57,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="HistogramDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HistogramDisplay.Designer.cs">
+      <DependentUpon>HistogramDisplay.cs</DependentUpon>
+    </Compile>
     <Compile Include="Image_loader.cs" />
     <Compile Include="Image_fetching.cs" />
     <Compile Include="Inflamation_detection.cs" />
@@ -64,6 +70,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Symmetry_analysis.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
